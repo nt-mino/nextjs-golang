@@ -9,7 +9,6 @@ import (
 	"google.golang.org/api/option"
 )
 
-// FirebaseApp はFirebaseアプリケーションのインスタンスを保持します。
 var FirebaseApp *firebase.App
 
 func init() {
@@ -27,7 +26,7 @@ func init() {
     FirebaseApp = app
 }
 
-// GetFirestoreClient はFirestoreクライアントを取得します。
+
 func GetFirestoreClient(ctx context.Context) (*firestore.Client, error) {
     return FirebaseApp.Firestore(ctx)
 }

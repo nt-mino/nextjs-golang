@@ -1,36 +1,24 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
-	"next-turtrial/api/config"
+	"net/http"
+
+	"github.com/julienschmidt/httprouter"
 )
 
-
-
 func main() {
+	fmt.Printf("main\n")
 
-    ctx := context.Background()
-    
-    client, err := config.GetFirestoreClient(ctx)
-    if err != nil {
-        log.Fatalf("Firestoreクライアントの取得に失敗しました: %v", err)
-    }
-    fmt.Println("Firestoreクライアントの取得に成功しました")
+	router := httprouter.New()
 
-    // * firestore.Client型のclientを使ってFirestoreの操作を行う
-    dsnap, err := client.Collection("users").Doc("YMmC8X8zowCf7Dt6WXGK").Get(ctx)
-    if err != nil {
-        log.Fatalf("Documentの取得に失敗しました: %v", err)
-    }
-    fmt.Println(dsnap.Data())
+	// router
+	router.GET("/user", getUser)
+	router.POST("/user", createUser)
 
-
-    defer client.Close()
-      
-    // fmt.Printf("hello, world\n")
+	// サーバー起動
+	if err := http.ListenAndServe(":5050", router); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
-
-
-
